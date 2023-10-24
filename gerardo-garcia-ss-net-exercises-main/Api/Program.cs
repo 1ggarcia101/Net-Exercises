@@ -27,8 +27,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValida
 // Add DbContext and migrations
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-	var sqlConnectionString = configuration.GetConnectionString("PostgreSqlConnection");
-	options.UseNpgsql(sqlConnectionString, x => x.MigrationsAssembly(persistenceAssembly.FullName));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnection"));
 });
 builder.Services.AddTransient<IRepository, EfRepository<AppDbContext>>();
 builder.Services.AddTransient<IReadOnlyRepository, ReadOnlyEfRepository<AppDbContext>>();
