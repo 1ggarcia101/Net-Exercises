@@ -41,7 +41,8 @@ namespace Common.Persistence
 			return result.Entity;
 		}
 
-		public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
 			return Context.SaveChangesAsync(cancellationToken);
 		}

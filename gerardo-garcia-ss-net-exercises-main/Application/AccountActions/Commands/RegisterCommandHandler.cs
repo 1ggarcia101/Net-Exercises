@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using Common.CQRS;
 using Common.Exceptions;
 using Common.Persistence;
-
-
+using Application.Identity;
+using Application.Identity.Jwt;
 
 namespace Application.AccountActions.Commands
 {
@@ -18,14 +18,13 @@ namespace Application.AccountActions.Commands
     {
         private readonly ISender _sender;
         private readonly IRepository _repository;
-        public string pofpof = "";
-        //private readonly IJwtCommand _jwtHandler;
+        private readonly IJwtCommand _jwtHandler;
 
-        public RegisterCommandHandler(ISender sender, IRepository Repository /*JwtHandler jwtHandler*/)
+        public RegisterCommandHandler(ISender sender, IRepository Repository, IJwtCommand jwtHandler)
         {
             _sender = sender;
             _repository = Repository;
-            //_jwtHandler = jwtHandler;
+            _jwtHandler = jwtHandler;
         }
 
         public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -43,9 +42,9 @@ namespace Application.AccountActions.Commands
              _repository.Add(newUser);
             await _repository.SaveChangesAsync();
 
-            //var token = _jwtHandler.GenerateToken(newUser);
+            var token = _jwtHandler.GenerateToken(newUser);
 
-            return pofpof;
+            return token;
         }
     }
 

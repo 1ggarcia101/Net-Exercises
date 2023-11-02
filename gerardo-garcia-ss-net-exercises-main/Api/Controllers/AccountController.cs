@@ -31,6 +31,13 @@ namespace Api.Controllers
             var token = await _sender.Send(command);
             return Ok(new { Success = true, Token = token });
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync(LoginCommand command)
+        {
+            var token = await _sender.Send(command);
+            return Ok(new { Success = true, Token = token });
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Api.Identity.Jwt
+namespace Application.Identity.Jwt
 {
     public interface IJwtCommand
     {

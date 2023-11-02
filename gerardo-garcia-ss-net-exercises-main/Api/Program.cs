@@ -9,7 +9,7 @@ using Common.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Api.Identity;
+using Application.Identity;
 
 var applicationAssembly = typeof(ApplicationEmptyClass).Assembly;
 var persistenceAssembly = typeof(AppDbContext).Assembly;

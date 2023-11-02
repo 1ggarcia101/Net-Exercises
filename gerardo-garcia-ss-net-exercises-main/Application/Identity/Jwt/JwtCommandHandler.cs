@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Domain.Entities;
 
-namespace Api.Identity.Jwt
+namespace Application.Identity.Jwt
 {
 
     public class JwtCommandHandler: IJwtCommand
