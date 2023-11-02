@@ -6,6 +6,10 @@ using Application;
 using Microsoft.EntityFrameworkCore;
 using Common.Exceptions;
 using Common.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Api.Identity;
 
 var applicationAssembly = typeof(ApplicationEmptyClass).Assembly;
 var persistenceAssembly = typeof(AppDbContext).Assembly;
@@ -27,12 +31,37 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValida
 // Add DbContext and migrations
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"));
+});
+builder.Services.AddDbContext<AuthDbContext>(options =>
+{
     options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnection"));
 });
 builder.Services.AddTransient<IRepository, EfRepository<AppDbContext>>();
 builder.Services.AddTransient<IReadOnlyRepository, ReadOnlyEfRepository<AppDbContext>>();
 builder.Services.AddTransient<AppDbContextMigrator>();
 builder.Services.AddTransient<AppDbInitializer>();
+
+//Add Jwt Settings
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["validIssuer"],
+        ValidAudience = jwtSettings["validAudience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+            .GetBytes(jwtSettings.GetSection("securityKey").Value))
+    };
+});
 
 // Add application services by convention
 applicationAssembly.ExportedTypes
