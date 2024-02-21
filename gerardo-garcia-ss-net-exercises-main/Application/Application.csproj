@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Identity\CQRS\" />
-    <Folder Include="Identity\Migrations\" />
   </ItemGroup>
 
 </Project>

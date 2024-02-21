@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Application.Identity;
+using Application.Identity.Jwt;
+using Application.AccountActions.Commands;
 
 var applicationAssembly = typeof(ApplicationEmptyClass).Assembly;
 var persistenceAssembly = typeof(AppDbContext).Assembly;
@@ -41,6 +43,9 @@ builder.Services.AddTransient<IRepository, EfRepository<AppDbContext>>();
 builder.Services.AddTransient<IReadOnlyRepository, ReadOnlyEfRepository<AppDbContext>>();
 builder.Services.AddTransient<AppDbContextMigrator>();
 builder.Services.AddTransient<AppDbInitializer>();
+builder.Services.AddTransient<IAuthRepository, AuthRepository>();
+builder.Services.AddTransient<IJwtCommand, JwtCommandHandler>();
+builder.Services.AddTransient<IRequestHandler<RegisterCommand, string>, RegisterCommandHandler>();
 
 //Add Jwt Settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");

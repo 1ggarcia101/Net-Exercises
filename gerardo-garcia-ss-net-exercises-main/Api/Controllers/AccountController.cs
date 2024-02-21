@@ -9,6 +9,7 @@ using Domain.Entities;
 using Persistence;
 using Common.Persistence;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Application.Identity;
 
 namespace Api.Controllers
 {
@@ -17,9 +18,9 @@ namespace Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly ISender _sender;
-        private readonly IRepository _accountRepository;
+        private readonly IAuthRepository _accountRepository;
 
-        public AccountController(ISender sender, IRepository accountRepository)
+        public AccountController(ISender sender, IAuthRepository accountRepository)
         {
             _sender = sender;
             _accountRepository = accountRepository;

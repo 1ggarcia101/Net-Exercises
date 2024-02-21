@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Identity
 {
@@ -7,5 +8,10 @@ namespace Application.Identity
         public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthDbContext).Assembly);
+        }
     }
 }

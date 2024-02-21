@@ -13,7 +13,7 @@ namespace Application.SaleTransactions.Commands
 		{
 			_repository = repository;
 		}
-
+		
 		public async Task Handle(PerformSaleCommand request, CancellationToken cancellationToken)
 		{
 			var taxRate = 0.16m;

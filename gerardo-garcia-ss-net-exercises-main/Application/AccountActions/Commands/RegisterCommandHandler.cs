@@ -19,12 +19,14 @@ namespace Application.AccountActions.Commands
         private readonly ISender _sender;
         private readonly IRepository _repository;
         private readonly IJwtCommand _jwtHandler;
+        private readonly IAuthRepository _authRepository;
 
-        public RegisterCommandHandler(ISender sender, IRepository Repository, IJwtCommand jwtHandler)
+        public RegisterCommandHandler(ISender sender, IRepository Repository, IJwtCommand jwtHandler, IAuthRepository authRepository)
         {
             _sender = sender;
             _repository = Repository;
             _jwtHandler = jwtHandler;
+            _authRepository = authRepository;
         }
 
         public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -39,8 +41,8 @@ namespace Application.AccountActions.Commands
                 UserType = UserType.Registered,
             };
 
-             _repository.Add(newUser);
-            await _repository.SaveChangesAsync();
+            await _authRepository.Add(newUser);
+            await _authRepository.SaveChangesAsync();
 
             var token = _jwtHandler.GenerateToken(newUser);
 
